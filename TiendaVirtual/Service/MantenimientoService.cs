@@ -70,5 +70,20 @@ namespace TiendaVirtual.Service
             }
 
         }
+
+        public async Task<Perfiles> SavePerfil([FromBody] Perfiles dato)
+        {
+            try
+            {
+                _DBContex.Perfiles.Add(dato);
+                await _DBContex.SaveChangesAsync();
+
+                return dato;
+            }
+            catch (Exception )
+            {
+                throw;
+            }
+        }
     }
 }

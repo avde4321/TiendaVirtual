@@ -61,5 +61,17 @@ namespace TiendaVirtual.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        public async Task<ActionResult> SavePerfil([FromBody] Perfiles dato)
+        {
+            try
+            {
+                return Ok(await _mantenimientoInterface.);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

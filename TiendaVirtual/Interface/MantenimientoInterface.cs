@@ -12,5 +12,6 @@ namespace TiendaVirtual.Interface
         Task<List<Usuario>> Getallusarios();
         Task<Usuario> Postsaveuser([FromBody] Usuario user);
         Task<ActionResult<bool>> Login(string user, string clave);
+        Task<Perfiles> SavePerfil([FromBody] Perfiles dato);
     }
 }
