@@ -37,6 +37,7 @@ namespace TiendaVirtual
             services.AddDbContext<DBContex>(x => x.UseSqlServer( Configuration.GetConnectionString("Conexion")));
 
             services.AddTransient<VeterinariaInterface, VeterinariaService>();
+            services.AddTransient<MantenimientoInterface, MantenimientoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,46 +18,6 @@ namespace TiendaVirtual.Controllers
             this._veterinariaInterface = veterinariaInterface;
         }
 
-        [HttpGet]
-        [Route("GetUsuarioall")]
-        public async Task<ActionResult> GetUsuarioall()
-        {
-            try
-            {
-                return Ok(await _veterinariaInterface.Getallusarios());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [Route("Login")]
-        public async Task<ActionResult> Login(string user, string clave)
-        {
-            try
-            {
-                return Ok(await _veterinariaInterface.Login(user,clave));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [Route("Postsaveuser")]
-        public async Task<ActionResult> Postsaveuser([FromBody] Usuario user)
-        {
-            try
-            {
-                return Ok(await _veterinariaInterface.Postsaveuser(user));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        
     }
 }
