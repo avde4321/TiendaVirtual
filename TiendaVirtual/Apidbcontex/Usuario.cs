@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,6 @@ namespace TiendaVirtual.Apidbcontex
         public string txEmail { set; get; }
         public string txFechaIngreso { set; get; }
         public string Estado { set; get; }
-
         public class Mapeo
         {
             public Mapeo(EntityTypeBuilder<Usuario> mapeoUsuario)

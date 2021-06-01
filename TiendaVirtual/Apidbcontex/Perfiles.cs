@@ -17,9 +17,9 @@ namespace TiendaVirtual.Apidbcontex
 
         public class Mapeo
         {
-            public Mapeo(EntityTypeBuilder<Perfiles> mapeoidPerfil)
+            public Mapeo(EntityTypeBuilder<Perfiles> mapeoPerfil)
             {
-                mapeoidPerfil.HasKey(x => x.idPerfil);
+                mapeoPerfil.HasKey(x => x.idPerfil);
             }
         }
 
