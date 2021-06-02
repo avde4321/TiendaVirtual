@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using TiendaVirtual.Apidbcontex;
 using TiendaVirtual.Interface;
 using TiendaVirtual.Modelo;
@@ -18,11 +19,14 @@ namespace TiendaVirtual.Controllers
     {
         private readonly MantenimientoInterface _mantenimientoInterface;
         private readonly ILogger _logger;
+        private ResData res = new ResData();
 
         public MantenimientoController(MantenimientoInterface mantenimientoInterface, ILogger<MantenimientoController> logger)
         {
             this._mantenimientoInterface = mantenimientoInterface;
             this._logger = logger;
+
+
         }
 
         [HttpGet]
@@ -31,18 +35,25 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                return Ok(await _mantenimientoInterface.Getallusarios());
+                var dbRes = await _mantenimientoInterface.Getallusarios();
+
+                var json = new {
+                    lisData = dbRes.Value
+                };
+
+                this.res.Data = json;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
 
                 _logger.LogError($"Error metodo GetUsuarioall{ex.Message}");
 
-                ErrorData error = new ErrorData();
-                error.CodError = "1";
-                error.Mensaje = "Error al consultar todos los Usuarios";
-                
-                return BadRequest(error);
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Error al consultar todos los Usuarios";
+
+                return BadRequest(res);
             }
         }
 
@@ -52,7 +63,26 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                return Ok(await _mantenimientoInterface.Login(user, clave));
+                var dbRes = await _mantenimientoInterface.Login(user, clave);
+
+                var json = new
+                {
+                    Token = "kggjhvufjvjygjkgkg",
+                    ExisteUsario = dbRes.Value
+                };
+
+                if (dbRes.Value.Equals(true))
+                {
+                    this.res.Data = json;
+                    return Ok(res);
+                }
+                else
+                {
+                    this.res.Error.CodError = 1;
+                    this.res.Error.Mensaje = "Incorrecto";
+                    this.res.Data = null;
+                    return Unauthorized(res);
+                }
             }
             catch (Exception ex)
             {
@@ -66,11 +96,19 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                return Ok(await _mantenimientoInterface.Postsaveuser(user));
+                var json = new {
+                    lisData = await _mantenimientoInterface.Postsaveuser(user)
+                };
+
+                this.res.Data = json;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Incorrecto";
+                return BadRequest(res);
             }
         }
 
@@ -80,12 +118,20 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                return Ok(await _mantenimientoInterface.SavePerfil(dato));
+                var json = new
+                {
+                    lisData = await _mantenimientoInterface.SavePerfil(dato)
+                };
+
+                this.res.Data = json;
+
+                return Ok(res);
             }
             catch (Exception)
             {
-
-                throw;
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Incorrecto";
+                return BadRequest(res);
             }
         }
 
@@ -95,12 +141,21 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                return Ok(await _mantenimientoInterface.GetAllPerfiles());
+                var dbRes = await _mantenimientoInterface.GetAllPerfiles();
+                var json = new
+                {
+                    lisData = dbRes.Value
+                };
+
+                this.res.Data = json;
+
+                return Ok(res);
             }
             catch (Exception)
             {
-
-                throw;
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Incorrecto";
+                return BadRequest(res);
             }
         }
 
@@ -110,14 +165,22 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                return Ok(await _mantenimientoInterface.SavePerfilUsuario(dato));
+                var json = new
+                {
+                    lisData = await _mantenimientoInterface.SavePerfilUsuario(dato)
+                };
+
+                this.res.Data = json;
+
+                return Ok(res);
             }
             catch (Exception)
             {
-
-                throw;
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Incorrecto";
+                return BadRequest(res);
             }
-            
+
         }
 
         [HttpGet]
@@ -126,12 +189,43 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                return Ok(await _mantenimientoInterface.GetAllPerfilUsuario());
+                var dbRes = await _mantenimientoInterface.GetAllPerfilUsuario();
+                var json = new
+                {
+                    lisData = dbRes.Value
+                };
+
+                this.res.Data = json;
+                return Ok(res);
             }
             catch (Exception)
             {
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Incorrecto";
+                return BadRequest(res);
+            }
+        }
 
-                throw;
+        [HttpGet]
+        [Route("GetMenu")]
+        public async Task<ActionResult> GetMenu()
+        {
+            try
+            {
+                var dbRes = await _mantenimientoInterface.GetMenu();
+                var json = new
+                {
+                    lisData = dbRes.Value
+                };
+
+                this.res.Data = json;
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Incorrecto";
+                return BadRequest(res);
             }
         }
     }

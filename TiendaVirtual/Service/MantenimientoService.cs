@@ -62,6 +62,25 @@ namespace TiendaVirtual.Service
 
         }
 
+        public async Task<ActionResult<List<Perfiles>>> GetMenu()
+        {
+            try
+            {
+                var data = await _DBContex.Perfiles.Select(t => new Perfiles
+                                           {
+                                               descripcion = t.descripcion,
+                                               url = t.url
+                                           }).ToListAsync();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<ActionResult<bool>> Login(string user, string clave)
         {
             try

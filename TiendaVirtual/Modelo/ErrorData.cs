@@ -7,7 +7,7 @@ namespace TiendaVirtual.Modelo
 {
     public class ErrorData
     {
-        public string CodError { get; set; }
+        public int CodError { get; set; }
         public string Mensaje { get; set; }
     }
 }
