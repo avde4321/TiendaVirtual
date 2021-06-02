@@ -57,6 +57,8 @@ namespace TiendaVirtual
 
             app.UseRouting();
 
+            app.UseCors("http://localhost:4200/");
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

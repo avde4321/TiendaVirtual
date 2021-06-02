@@ -6,10 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using TiendaVirtual.Apidbcontex;
 using TiendaVirtual.Interface;
+using TiendaVirtual.Util;
 
 namespace TiendaVirtual.Service
 {
-    public class MantenimientoService : MantenimientoInterface
+    public class MantenimientoService : VariablesGlobales, MantenimientoInterface
     {
         private readonly DBContex _DBContex;
         public MantenimientoService(DBContex dBContex)
@@ -17,7 +18,36 @@ namespace TiendaVirtual.Service
             _DBContex = dBContex;
         }
 
-        public async Task<List<Usuario>> Getallusarios()
+        public async Task<ActionResult<List<Perfiles>>> GetAllPerfiles()
+        {
+            try
+            {
+                var table = await _DBContex.Perfiles.ToListAsync();
+
+                return table;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ActionResult<List<PerfilesUsuario>>> GetAllPerfilUsuario()
+        {
+            try
+            {
+                var table = await _DBContex.PerfilesUsuario.ToListAsync();
+                return table;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ActionResult<List<Usuario>>> Getallusarios()
         {
             try
             {
@@ -49,14 +79,10 @@ namespace TiendaVirtual.Service
         {
             try
             {
-                string dia = string.Empty;
-                string mes = string.Empty;
                 if (!user.Equals(null))
                 {
-                    dia = DateTime.Now.Day.ToString().Length == 1 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString();
-                    mes = DateTime.Now.Month.ToString().Length == 1 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
-
-                    user.txFechaIngreso = Convert.ToString(dia + "-" + mes + "-" + DateTime.Now.Year);
+                    user.txFechaIngreso = DateTime.Now.ToString("dd/MM/yyyy").Replace("/", "-");
+                    user.Estado = Activo;
 
                     _DBContex.Usuario.Add(user);
                     await _DBContex.SaveChangesAsync();
@@ -69,6 +95,47 @@ namespace TiendaVirtual.Service
                 throw ex;
             }
 
+        }
+
+        public async Task<Perfiles> SavePerfil([FromBody] Perfiles dato)
+        {
+            try
+            {
+                if (!dato.Equals(null))
+                {
+                    dato.txFechaIngreso = DateTime.Now.ToString("dd/MM/yyyy").Replace("/","-");
+                    dato.Estado = Activo;
+
+                    _DBContex.Perfiles.Add(dato);
+                    await _DBContex.SaveChangesAsync();
+                }
+                return dato;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<PerfilesUsuario> SavePerfilUsuario([FromBody] PerfilesUsuario dato)
+        {
+            try
+            {
+                if (!dato.Equals(null))
+                {
+                    dato.txFechaIngreso = DateTime.Now.ToString("dd/MM/yyyy").Replace("/", "-");
+                    dato.Estado = Activo;
+
+                    _DBContex.PerfilesUsuario.Add(dato);
+                    await _DBContex.SaveChangesAsync();
+                }
+                return dato;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

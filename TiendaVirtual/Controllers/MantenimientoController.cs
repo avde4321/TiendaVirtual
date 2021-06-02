@@ -47,7 +47,7 @@ namespace TiendaVirtual.Controllers
         }
 
         [HttpGet]
-        [Route("Login")]
+        [Route("Login/{user}/{clave}")]
         public async Task<ActionResult> Login(string user, string clave)
         {
             try
@@ -71,6 +71,67 @@ namespace TiendaVirtual.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("SavePerfil")]
+        public async Task<ActionResult> SavePerfil([FromBody] Perfiles dato)
+        {
+            try
+            {
+                return Ok(await _mantenimientoInterface.SavePerfil(dato));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllPerfiles")]
+        public async Task<ActionResult> GetAllPerfiles()
+        {
+            try
+            {
+                return Ok(await _mantenimientoInterface.GetAllPerfiles());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [Route("SavePerfilUsuario")]
+        public async Task<ActionResult> SavePerfilUsuario([FromBody] PerfilesUsuario dato)
+        {
+            try
+            {
+                return Ok(await _mantenimientoInterface.SavePerfilUsuario(dato));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("GetAllPerfilUsuario")]
+        public async Task<ActionResult> GetAllPerfilUsuario()
+        {
+            try
+            {
+                return Ok(await _mantenimientoInterface.GetAllPerfilUsuario());
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
