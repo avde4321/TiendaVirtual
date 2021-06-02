@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TiendaVirtual.Apidbcontex;
 using TiendaVirtual.Interface;
+using TiendaVirtual.Modelo;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,9 +17,12 @@ namespace TiendaVirtual.Controllers
     public class MantenimientoController : ControllerBase
     {
         private readonly MantenimientoInterface _mantenimientoInterface;
-        public MantenimientoController(MantenimientoInterface mantenimientoInterface)
+        private readonly ILogger _logger;
+
+        public MantenimientoController(MantenimientoInterface mantenimientoInterface, ILogger<MantenimientoController> logger)
         {
             this._mantenimientoInterface = mantenimientoInterface;
+            this._logger = logger;
         }
 
         [HttpGet]
@@ -30,7 +35,14 @@ namespace TiendaVirtual.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+
+                _logger.LogError($"Error metodo GetUsuarioall{ex.Message}");
+
+                ErrorData error = new ErrorData();
+                error.CodError = "1";
+                error.Mensaje = "Error al consultar todos los Usuarios";
+                
+                return BadRequest(error);
             }
         }
 

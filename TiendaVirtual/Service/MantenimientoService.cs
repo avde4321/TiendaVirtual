@@ -25,9 +25,9 @@ namespace TiendaVirtual.Service
 
                 return data;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }
@@ -39,9 +39,9 @@ namespace TiendaVirtual.Service
                 bool res = await _DBContex.Usuario.CountAsync(u => u.Usuario1 == user && u.Clave == clave) > 0 ? true : false;
                 return res;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -64,9 +64,9 @@ namespace TiendaVirtual.Service
 
                 return user;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }
