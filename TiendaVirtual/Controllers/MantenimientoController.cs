@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TiendaVirtual.Apidbcontex;
 using TiendaVirtual.Interface;
 using TiendaVirtual.Modelo;
+using TiendaVirtual.Util;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,18 +18,19 @@ namespace TiendaVirtual.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MantenimientoController : ControllerBase
+    public class MantenimientoController : BaseApiController
     {
         private readonly MantenimientoInterface _mantenimientoInterface;
         private readonly ILogger _logger;
+        private readonly IConfiguration _configuration;
         private ResData res = new ResData();
+        private GeneraToken Gtoken = new GeneraToken();
 
-        public MantenimientoController(MantenimientoInterface mantenimientoInterface, ILogger<MantenimientoController> logger)
+        public MantenimientoController(MantenimientoInterface mantenimientoInterface, ILogger<MantenimientoController> logger,IConfiguration configuration)
         {
             this._mantenimientoInterface = mantenimientoInterface;
             this._logger = logger;
-
-
+            this._configuration = configuration;
         }
 
         [HttpGet]
@@ -56,22 +60,22 @@ namespace TiendaVirtual.Controllers
                 return BadRequest(res);
             }
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("Login/{user}/{clave}")]
         public async Task<ActionResult> Login(string user, string clave)
         {
             try
             {
+
                 var dbRes = await _mantenimientoInterface.Login(user, clave);
 
                 var json = new
                 {
-                    Token = "kggjhvufjvjygjkgkg",
-                    ExisteUsario = dbRes.Value
+                    Token = Gtoken.GenerateJwtToken(dbRes.Value.id, _configuration.GetSection("GlobalKey:segurtyText").Value,Convert.ToInt32(_configuration.GetSection("GlobalKey:timer").Value))
                 };
 
-                if (dbRes.Value.Equals(true))
+                if (!dbRes.Value.Equals(null))
                 {
                     this.res.Data = json;
                     return Ok(res);

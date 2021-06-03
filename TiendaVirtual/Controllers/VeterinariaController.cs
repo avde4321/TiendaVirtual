@@ -10,7 +10,7 @@ namespace TiendaVirtual.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VeterinariaController : ControllerBase
+    public class VeterinariaController : BaseApiController
     {
         private readonly VeterinariaInterface _veterinariaInterface;
         public VeterinariaController(VeterinariaInterface veterinariaInterface)

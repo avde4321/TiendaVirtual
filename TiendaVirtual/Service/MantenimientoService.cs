@@ -81,11 +81,11 @@ namespace TiendaVirtual.Service
             }
         }
 
-        public async Task<ActionResult<bool>> Login(string user, string clave)
+        public async Task<ActionResult<Usuario>> Login(string user, string clave)
         {
             try
             {
-                bool res = await _DBContex.Usuario.CountAsync(u => u.Usuario1 == user && u.Clave == clave) > 0 ? true : false;
+                var res = await _DBContex.Usuario.FirstOrDefaultAsync(u => u.Usuario1 == user && u.Clave == clave);
                 return res;
             }
             catch (Exception ex)
