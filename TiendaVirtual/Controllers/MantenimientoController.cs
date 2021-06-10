@@ -100,11 +100,19 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                var json = new {
-                    lisData = await _mantenimientoInterface.Postsaveuser(user)
-                };
+                if (user.Usuario1 != null && user.Clave != null && user.txEmail != null)
+                {
+                    var json = new
+                    {
+                        lisData = await _mantenimientoInterface.Postsaveuser(user)
+                    };
 
-                this.res.Data = json;
+                    this.res.Data = json;
+                }
+                else
+                {
+                    throw new Exception();
+                }
 
                 return Ok(res);
             }
@@ -122,12 +130,19 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                var json = new
+                if (dato.titulo != null && dato.url != null) 
                 {
-                    lisData = await _mantenimientoInterface.SavePerfil(dato)
-                };
+                    var json = new
+                    {
+                        lisData = await _mantenimientoInterface.SavePerfil(dato)
+                    };
 
-                this.res.Data = json;
+                    this.res.Data = json;
+                }
+                else
+                {
+                    throw new Exception();
+                }
 
                 return Ok(res);
             }
@@ -169,12 +184,19 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                var json = new
+                if (dato.idPerfil != 0 && dato.idUsuario != 0)
                 {
-                    lisData = await _mantenimientoInterface.SavePerfilUsuario(dato)
-                };
+                    var json = new
+                    {
+                        lisData = await _mantenimientoInterface.SavePerfilUsuario(dato)
+                    };
 
-                this.res.Data = json;
+                    this.res.Data = json;
+                }
+                else
+                {
+                    throw new Exception();
+                }
 
                 return Ok(res);
             }
@@ -221,6 +243,28 @@ namespace TiendaVirtual.Controllers
                 {
                     lisData = dbRes.Value
                 };
+
+                this.res.Data = json;
+                return Ok(res);
+            }
+            catch (Exception)
+            {
+                this.res.Error.CodError = 1;
+                this.res.Error.Mensaje = "Incorrecto";
+                return BadRequest(res);
+            }
+        }
+
+        [HttpPut]
+        [Route("EditarUsuario")]
+        public async Task<ActionResult> EditarUsuario([FromBody]Usuario dato)
+        {
+            try
+            {
+                var json = new
+                {
+                    lisData = await _mantenimientoInterface.EditarUsuario(dato)
+            };
 
                 this.res.Data = json;
                 return Ok(res);

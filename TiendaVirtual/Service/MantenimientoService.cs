@@ -18,6 +18,32 @@ namespace TiendaVirtual.Service
             _DBContex = dBContex;
         }
 
+        public async Task<Usuario> EditarUsuario([FromBody] Usuario dato)
+        {
+            try
+            {
+                if (!dato.Equals(null))
+                {
+                    var update = _DBContex.Usuario.FirstOrDefault(u => u.id == dato.id);
+
+                    if (!update.Usuario1.Equals(dato.Usuario1) && dato.Usuario1 != null && update.Usuario1 != null) { update.Usuario1 = dato.Usuario1; }
+                    if (!update.Clave.Equals(dato.Clave) && dato.Clave != null && update.Clave != null) { update.Clave = dato.Clave; }
+                    if (!update.txEmail.Equals(dato.txEmail) && dato.txEmail != null && update.txEmail != null) { update.txEmail = dato.txEmail; }
+                    if (!update.Estado.Equals(dato.Estado) && dato.Estado != null && update.Estado != null) { update.Estado = dato.Estado; }
+
+                    await _DBContex.SaveChangesAsync();
+                }
+
+                return dato;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
+
         public async Task<ActionResult<List<Perfiles>>> GetAllPerfiles()
         {
             try
@@ -67,10 +93,10 @@ namespace TiendaVirtual.Service
             try
             {
                 var data = await _DBContex.Perfiles.Select(t => new Perfiles
-                                           {
-                                               descripcion = t.descripcion,
-                                               url = t.url
-                                           }).ToListAsync();
+                {
+                    descripcion = t.descripcion,
+                    url = t.url
+                }).ToListAsync();
 
                 return data;
             }
@@ -122,7 +148,7 @@ namespace TiendaVirtual.Service
             {
                 if (!dato.Equals(null))
                 {
-                    dato.txFechaIngreso = DateTime.Now.ToString("dd/MM/yyyy").Replace("/","-");
+                    dato.txFechaIngreso = DateTime.Now.ToString("dd/MM/yyyy").Replace("/", "-");
                     dato.Estado = Activo;
 
                     _DBContex.Perfiles.Add(dato);

@@ -17,5 +17,6 @@ namespace TiendaVirtual.Interface
         Task<PerfilesUsuario> SavePerfilUsuario([FromBody] PerfilesUsuario dato);
         Task<ActionResult<List<PerfilesUsuario>>> GetAllPerfilUsuario();
         Task<ActionResult<List<Perfiles>>> GetMenu();
+        Task<Usuario> EditarUsuario([FromBody] Usuario dato);
     }
 }
