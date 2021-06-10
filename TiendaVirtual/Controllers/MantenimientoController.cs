@@ -26,7 +26,7 @@ namespace TiendaVirtual.Controllers
         private ResData res = new ResData();
         private GeneraToken Gtoken = new GeneraToken();
 
-        public MantenimientoController(MantenimientoInterface mantenimientoInterface, ILogger<MantenimientoController> logger,IConfiguration configuration)
+        public MantenimientoController(MantenimientoInterface mantenimientoInterface, ILogger<MantenimientoController> logger, IConfiguration configuration)
         {
             this._mantenimientoInterface = mantenimientoInterface;
             this._logger = logger;
@@ -41,7 +41,8 @@ namespace TiendaVirtual.Controllers
             {
                 var dbRes = await _mantenimientoInterface.Getallusarios();
 
-                var json = new {
+                var json = new
+                {
                     lisData = dbRes.Value
                 };
 
@@ -72,7 +73,7 @@ namespace TiendaVirtual.Controllers
 
                 var json = new
                 {
-                    Token = Gtoken.GenerateJwtToken(dbRes.Value.id, _configuration.GetSection("GlobalKey:segurtyText").Value,Convert.ToInt32(_configuration.GetSection("GlobalKey:timer").Value))
+                    Token = Gtoken.GenerateJwtToken(dbRes.Value.id, _configuration.GetSection("GlobalKey:segurtyText").Value, Convert.ToInt32(_configuration.GetSection("GlobalKey:timer").Value))
                 };
 
                 if (!dbRes.Value.Equals(null))
@@ -130,7 +131,7 @@ namespace TiendaVirtual.Controllers
         {
             try
             {
-                if (dato.titulo != null && dato.url != null) 
+                if (dato.titulo != null && dato.url != null)
                 {
                     var json = new
                     {
@@ -257,14 +258,14 @@ namespace TiendaVirtual.Controllers
 
         [HttpPut]
         [Route("EditarUsuario")]
-        public async Task<ActionResult> EditarUsuario([FromBody]Usuario dato)
+        public async Task<ActionResult> EditarUsuario([FromBody] Usuario dato)
         {
             try
             {
                 var json = new
                 {
                     lisData = await _mantenimientoInterface.EditarUsuario(dato)
-            };
+                };
 
                 this.res.Data = json;
                 return Ok(res);
