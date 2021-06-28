@@ -16,6 +16,7 @@ namespace TiendaVirtual.Apidbcontex
         public string txEmail { set; get; }
         public string txFechaIngreso { set; get; }
         public string Estado { set; get; }
+
         public class Mapeo
         {
             public Mapeo(EntityTypeBuilder<Usuario> mapeoUsuario)

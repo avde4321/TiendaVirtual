@@ -10,5 +10,6 @@ namespace TiendaVirtual.Util
         public string Activo = "A";
         public string Inactivo = "I";
         public string IdToken = "#p3r50n";
+        public string Seguritytext = "[Preubas de token]";
     }
 }
